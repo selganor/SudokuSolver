@@ -77,9 +77,7 @@ namespace SudokuSolver.Test
             game.SetConstrainedCell(new Coords(8, 5), 2);
             game.SetConstrainedCell(new Coords(8, 8), 5);
 
-            var iterator = game.GetLinearIterator();
-            var solver = new SudokuGameSolver(iterator, game);
-            var result = solver.Solve();
+            var result = game.SolveUsingLinearIterator();
 
             Assert.AreEqual(SolveResults.Solved, result);
         }

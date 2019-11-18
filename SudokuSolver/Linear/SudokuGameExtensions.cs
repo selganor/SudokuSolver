@@ -8,5 +8,12 @@ namespace SudokuSolver
         {
             return new LinearIterator(game);
         }
+
+        public static SolveResults SolveUsingLinearIterator(this SudokuGame game)
+        {
+            var iterator = game.GetLinearIterator();
+            var solver = new SudokuGameSolver(iterator, game);
+            return solver.Solve();
+        }
     }
 }
