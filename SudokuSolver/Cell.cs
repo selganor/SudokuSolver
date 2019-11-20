@@ -78,7 +78,7 @@ namespace SudokuSolver
                 throw new InvalidOperationException("Value cannot be set on constrained cells.");
 
             if (value != 0 && PossibleValues.All(v => v != value))
-                throw new InvalidOperationException($"Value {value} must be within the list of the possible values [{string.Join(", ",PossibleValues)}]");
+                throw new InvalidOperationException($"Value {value} must be within the list of possible values [{string.Join(", ",PossibleValues)}]");
 
             var oldValue = CurrentValue;
             CurrentValue = 0;
@@ -108,7 +108,7 @@ namespace SudokuSolver
         public void UnsetConstrained()
         {
             IsConstrained = false;
-            SetCellValue(0);
+            Unset();
         }
 
         public override string ToString()
