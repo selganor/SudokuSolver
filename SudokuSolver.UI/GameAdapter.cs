@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SudokuSolver.UI
@@ -12,6 +8,7 @@ namespace SudokuSolver.UI
     {
         private SudokuGame game;
         private List<TextBox> allCells = new List<TextBox>();
+        private bool UserMode = true;
 
         public GameAdapter()
         {
@@ -37,15 +34,16 @@ namespace SudokuSolver.UI
         {
             int topOffset = 20;
             int leftOffset = 20;
-            int offset = 5;
+            int xoffset = ((x / 3) % 3) * 5;
+            int yoffset = ((y / 3) % 3) * 5;
             int size = 55;
 
             TextBox cell = new TextBox();
 
             cell.Font = new Font("Segoe Print", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             cell.Location = new Point(
-                leftOffset + x * (size + offset),
-                topOffset + y * (size + offset)
+                leftOffset + xoffset + x * size,
+                topOffset + yoffset + y * size
                 );
             cell.Name = $"{x}.{y}";
             cell.Size = new Size(size, size);
@@ -53,9 +51,12 @@ namespace SudokuSolver.UI
             cell.TextAlign = HorizontalAlignment.Center;
             cell.MaxLength = 1;
 
-            cell.TextChanged += (sender, e) => {
+            cell.TextChanged += (sender, e) =>
+            {
+                if (!UserMode) return;
+
                 var textcell = (TextBox)sender;
-                int newVal ;
+                int newVal;
 
                 textcell.BackColor = Color.White;
                 if (string.IsNullOrWhiteSpace(textcell.Text))
@@ -102,12 +103,14 @@ namespace SudokuSolver.UI
 
         private void RefreshAllCellsValue()
         {
+            UserMode = false;
             foreach (var c in allCells)
             {
                 var gc = (Cell)c.Tag;
-                
+
                 c.Text = gc.CurrentValue.ToString();
             }
+            UserMode = true;
         }
     }
 }
